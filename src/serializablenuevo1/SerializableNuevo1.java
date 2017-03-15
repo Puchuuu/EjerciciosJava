@@ -48,26 +48,49 @@ public class SerializableNuevo1{
                     for(i=0;i<Cuentas.size();i++){
                         
                         System.out.println("No Cuenta: "+((Cuenta)Cuentas.elementAt(i)).getID());
-                        System.out.println("Nombre: "+((Cuenta)Cuentas.elementAt(i)).getNombre()     );//AQUI LA MANERA DE HACER EL CASTIGN PARA ACCEDER A LOS METODOS DEL OBJETO, CAZURRO
+                        System.out.println("Nombre: "+((Cuenta)Cuentas.elementAt(i)).getNombre()     );//AQUI LA MANERA DE HACER EL CASTING PARA ACCEDER A LOS METODOS DEL OBJETO, CAZURRO
                         System.out.println("Apellidos: "+((Cuenta)Cuentas.elementAt(i)).getApellidos()     );
                         System.out.println("Saldo: "+((Cuenta)Cuentas.elementAt(i)).getSaldo());
                     }
                     break;
                 case 2:
+                    
+                    float dinero;
+                    
                     do{
-                        opcion2 = MenuAdministrar();
+                        opcion2 = MenuAdministrar(Cuentas);
                         opcion3 = MenuCuenta();
                         
                         switch(opcion3){
                             case 1:
+                                System.out.println("Tu saldo actual es de: "+((Cuenta)Cuentas.elementAt(opcion3)).getSaldo()+"€");
                                 break;
                             case 2:
+                                System.out.println("Cuánto dinero vas a ingresar?");
+                                dinero = teclado.nextFloat();
+                                ((Cuenta)Cuentas.elementAt(opcion3)).Ingreso(dinero);
+                                System.out.println("Dinero ingresado satisfactoriamente");
                                 break;
                             case 3:
+                                System.out.println("Cuánto dinero vas a sacar?");
+                                dinero = teclado.nextFloat();
+                                ((Cuenta)Cuentas.elementAt(opcion3)).Reintegro(dinero);
+                                System.out.println("Aquí tienes tu dinero. Saldo actual: "+((Cuenta)Cuentas.elementAt(opcion3)).getSaldo()+"€");
                                 break;
                             case 4:
+                                int transf;
+                                
+                                System.out.println("Cuánto dinero quieres transferir?");
+                                dinero = teclado.nextFloat();
+                                ((Cuenta)Cuentas.elementAt(opcion3)).Reintegro(dinero);
+                                System.out.println("A qué cuenta quieres transferirle el dinero?");
+                                mostrarCuentas(Cuentas);//La perfección sería poner un do-while y que no salga hasta que ponga una diferente de la misma opcion3. Sino se lo estaría ingresando a si mismo
+                                transf = teclado.nextInt();
+                                ((Cuenta)Cuentas.elementAt(transf)).Ingreso(dinero);
+                                System.out.println("Has ingresado "+dinero+"€ a la cuenta de "+((Cuenta)Cuentas.elementAt(transf)).getNombre()+" satisfactoriamente.");
                                 break;
                             case 0:
+                                System.out.println("Saliendo del menú de administración de cuenta...");
                                 break;
                             default:
                                 break;
@@ -118,13 +141,13 @@ public class SerializableNuevo1{
         return op;
     }
     
-    public static int MenuAdministrar(){
+    public static int MenuAdministrar(Vector Cuentas){
          
-        int op;
+        int op, i;
         
         System.out.println("*********** M E N U **********");
         System.out.println("Selecciona la cuenta a administrar: ");
-        
+        mostrarCuentas(Cuentas);
         
         op = teclado.nextInt();
         
@@ -145,5 +168,14 @@ public class SerializableNuevo1{
         op = teclado.nextInt();
         
         return op;
+    }
+    
+    public static void mostrarCuentas(Vector Cuentas){
+        
+        int i;
+        
+        for(i=0;i<Cuentas.size();i++){
+            System.out.println(i+" - ID: "+((Cuenta)Cuentas.elementAt(i)).getID()+" | Nombre: "+((Cuenta)Cuentas.elementAt(i)).getNombre()+" | Apellidos: "+((Cuenta)Cuentas.elementAt(i)).getApellidos()+"\n");
+        }
     }
 }
